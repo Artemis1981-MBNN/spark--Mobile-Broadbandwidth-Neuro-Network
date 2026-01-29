@@ -1,5 +1,7 @@
 # Spark Mobile Broadband Neuro Network Integration
 
+> **Base Repository**: This project is based on the main [Spark Mobile Broadband Neuro Network (MBNN)](https://github.com/Jury1981/spark--Mobile-Broadband-Neuro-Network) repository by Jury1981. For the original implementation and core documentation, please refer to the base repository.
+
 ## Overview
 
 This repository provides configuration templates and examples for using Apache Spark's built-in Neural Network capabilities (MLlib) and establishes a configuration framework to integrate with the [Jury1981/Artemis1981](https://github.com/Jury1981/Artemis1981) repository for mobile broadband neuro network processing.
