@@ -76,80 +76,68 @@ class SubstituteParmsAstBuilder extends SqlBaseParserBaseVisitor[AnyRef] {
   }
 
   /**
+   * Common implementation for processing named parameters. Extracts parameter name and location
+   * information. Note: The return value is not used; this method operates via side effects.
+   */
+  private def processNamedParameter(
+      marker: NamedParameterMarkerContext,
+      startIndex: Int,
+      stopIndex: Int): AnyRef = {
+    // Named parameters use simpleIdentifier, so .getText() is correct.
+    val paramName = marker.simpleIdentifier().getText
+    namedParams += paramName
+
+    val locations =
+      namedParamLocations.getOrElseUpdate(paramName, mutable.ListBuffer[ParameterLocation]())
+    locations += ParameterLocation(startIndex, stopIndex)
+
+    null // Return value not used
+  }
+
+  /**
+   * Common implementation for processing positional parameters. Tracks parameter location
+   * information. Note: The return value is not used; this method operates via side effects.
+   */
+  private def processPositionalParameter(startIndex: Int): AnyRef = {
+    positionalParams += startIndex
+
+    // Question mark is single character, so stopIndex = startIndex + 1
+    val stopIndex = startIndex + 1
+    positionalParamLocations += ParameterLocation(startIndex, stopIndex)
+
+    null // Return value not used
+  }
+
+  /**
    * Collect information about a named parameter in a literal context. Note: The return value is
    * not used; this method operates via side effects.
    */
   override def visitNamedParameterLiteral(ctx: NamedParameterLiteralContext): AnyRef =
-    withOrigin(ctx) {
-      // Named parameters use simpleIdentifier, so .getText() is correct.
-      val paramName = ctx.namedParameterMarker().simpleIdentifier().getText
-      namedParams += paramName
-
-      // Calculate the location of the entire parameter (including the colon)
-      val startIndex = ctx.getStart.getStartIndex
-      val stopIndex = ctx.getStop.getStopIndex + 1
-      val locations =
-        namedParamLocations.getOrElseUpdate(paramName, mutable.ListBuffer[ParameterLocation]())
-      locations += ParameterLocation(startIndex, stopIndex)
-
-      null // Return value not used
-    }
+    processNamedParameter(ctx.namedParameterMarker(), ctx.getStart.getStartIndex,
+      ctx.getStop.getStopIndex + 1)
 
   /**
    * Collect information about a positional parameter in a literal context. Note: The return value
    * is not used; this method operates via side effects.
    */
   override def visitPosParameterLiteral(ctx: PosParameterLiteralContext): AnyRef =
-    withOrigin(ctx) {
-      val startIndex = ctx.QUESTION().getSymbol.getStartIndex
-      positionalParams += startIndex
-
-      // Question mark is single character, so stopIndex = startIndex + 1
-      val stopIndex = startIndex + 1
-      positionalParamLocations += ParameterLocation(startIndex, stopIndex)
-
-      null // Return value not used
-    }
+    processPositionalParameter(ctx.QUESTION().getSymbol.getStartIndex)
 
   /**
    * Collect information about named parameter markers. This handles the namedParameterMarker case
-   * in the shared parameterMarker grammar rule. Note: The return value is not used; this method
-   * operates via side effects.
+   * in the shared parameterMarker grammar rule. Delegates to the common implementation.
    */
   override def visitNamedParameterMarkerRule(ctx: NamedParameterMarkerRuleContext): AnyRef =
-    withOrigin(ctx) {
-      // Named parameters use simpleIdentifier, so .getText() is correct.
-      val paramName = ctx.namedParameterMarker().simpleIdentifier().getText
-      namedParams += paramName
-
-      // Calculate the location of the entire parameter (including the colon)
-      val startIndex = ctx.getStart.getStartIndex
-      val stopIndex = ctx.getStop.getStopIndex + 1
-      val locations =
-        namedParamLocations.getOrElseUpdate(paramName, mutable.ListBuffer[ParameterLocation]())
-      locations += ParameterLocation(startIndex, stopIndex)
-
-      null // Return value not used
-    }
+    processNamedParameter(ctx.namedParameterMarker(), ctx.getStart.getStartIndex,
+      ctx.getStop.getStopIndex + 1)
 
   /**
    * Collect information about positional parameter markers. This handles the QUESTION case in the
-   * shared parameterMarker grammar rule. Note: The return value is not used; this method operates
-   * via side effects.
+   * shared parameterMarker grammar rule. Delegates to the common implementation.
    */
   override def visitPositionalParameterMarkerRule(
       ctx: PositionalParameterMarkerRuleContext): AnyRef =
-    withOrigin(ctx) {
-      val paramIndex = positionalParams.size
-      positionalParams += paramIndex
-
-      // Parameter marker is single character, so stopIndex = startIndex + 1
-      val startIndex = ctx.getStart.getStartIndex
-      val stopIndex = startIndex + 1
-      positionalParamLocations += ParameterLocation(startIndex, stopIndex)
-
-      null // Return value not used
-    }
+    processPositionalParameter(ctx.getStart.getStartIndex)
 
   /**
    * Visit singleStringLit contexts to ensure we traverse into parameter markers. This is needed
