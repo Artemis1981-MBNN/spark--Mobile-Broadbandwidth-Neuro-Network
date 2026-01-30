@@ -281,6 +281,17 @@ object SQLConf {
       .booleanConf
       .createWithDefault(true)
 
+  val SUBQUERY_ALIAS_ALWAYS_PROPAGATE_METADATA_COLUMNS =
+    buildConf("spark.sql.analyzer.subqueryAliasAlwaysPropagateMetadataColumns")
+      .internal()
+      .version("4.2.0")
+      .doc(
+        "When true, SubqueryAlias always propagates metadata columns from its child. " +
+        "When false, SubqueryAlias only propagates metadata columns if the child is a " +
+        "LeafNode or another SubqueryAlias (legacy behavior).")
+      .booleanConf
+      .createWithDefault(true)
+
   val BLOCK_CREATE_TEMP_TABLE_USING_PROVIDER =
     buildConf("spark.sql.legacy.blockCreateTempTableUsingProvider")
       .doc("If enabled, we fail legacy CREATE TEMPORARY TABLE ... USING provider during parsing.")
@@ -916,6 +927,17 @@ object SQLConf {
       .version("4.1.0")
       .booleanConf
       .createWithDefault(true)
+
+  private[spark] val SHUFFLE_CHECKSUM_MISMATCH_QUERY_LEVEL_ROLLBACK_ENABLED =
+    buildConf("spark.sql.shuffle.orderIndependentChecksum.enableQueryLevelRollbackOnMismatch")
+      .internal()
+      .doc("Whether to rollback all the consumer stages from the same query executor " +
+        "when we detect checksum mismatches with its producer stages, including cancel " +
+        "running shuffle map stages and resubmit, clean up all the shuffle data written " +
+        "for available shuffle map stages and abort the running result stages.")
+      .version("4.2.0")
+      .booleanConf
+      .createWithDefault(false)
 
   val SHUFFLE_TARGET_POSTSHUFFLE_INPUT_SIZE =
     buildConf("spark.sql.adaptive.shuffle.targetPostShuffleInputSize")
@@ -7200,6 +7222,9 @@ class SQLConf extends Serializable with Logging with SqlApiConf {
 
   def shuffleChecksumMismatchFullRetryEnabled: Boolean =
     getConf(SHUFFLE_CHECKSUM_MISMATCH_FULL_RETRY_ENABLED)
+
+  def shuffleChecksumMismatchQueryLevelRollbackEnabled: Boolean =
+    getConf(SHUFFLE_CHECKSUM_MISMATCH_QUERY_LEVEL_ROLLBACK_ENABLED)
 
   def allowCollationsInMapKeys: Boolean = getConf(ALLOW_COLLATIONS_IN_MAP_KEYS)
 
