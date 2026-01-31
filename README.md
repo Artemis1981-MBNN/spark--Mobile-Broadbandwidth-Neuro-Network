@@ -1,5 +1,7 @@
 # Apache Spark
 
+> **Note**: This repository is based on the [Spark Mobile Broadband Neuro Network (MBNN)](https://github.com/Jury1981/spark--Mobile-Broadband-Neuro-Network) repository, which provides configuration templates and integration framework for mobile broadband neural network processing with Apache Spark.
+
 Spark is a unified analytics engine for large-scale data processing. It provides
 high-level APIs in Scala, Java, Python, and R (Deprecated), and an optimized engine that
 supports general computation graphs for data analysis. It also supports a
