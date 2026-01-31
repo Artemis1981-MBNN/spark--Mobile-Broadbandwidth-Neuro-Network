@@ -37,7 +37,10 @@ This integration provides:
 
 ## Configuration Files
 
-### 1. Neural Network Configuration (`conf/neural-network.conf`)
+### 1. Neural Network Configuration
+
+Template: `config/neural-network.conf.template`
+Runtime: `conf/spark-defaults.conf` (after copying template)
 
 This file contains Spark-specific settings for neural network operations:
 
@@ -59,7 +62,10 @@ spark.broadband.neuro.batchSize=32
 spark.broadband.neuro.optimizer=adam
 ```
 
-### 2. Artemis Integration Properties (`conf/artemis-integration.properties`)
+### 2. Artemis Integration Properties
+
+Template: `config/artemis-integration.properties.template`
+Runtime: `conf/artemis-integration.properties` (after copying template)
 
 This file provides a configuration framework for organizing Artemis1981 repository connection settings:
 

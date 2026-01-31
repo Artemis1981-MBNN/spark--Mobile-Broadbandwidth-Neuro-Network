@@ -113,10 +113,11 @@ def main():
     spark = create_spark_session()
     
     try:
-        # Create sample data
+        # Create sample data and split into train/test sets
         print("\nCreating sample data...")
-        train_data = create_sample_data(spark)
-        test_data = create_sample_data(spark)
+        data = create_sample_data(spark)
+        # Split data 70% training, 30% testing
+        train_data, test_data = data.randomSplit([0.7, 0.3], seed=1234)
         
         # Configure and train neural network
         print("\nConfiguring neural network...")
