@@ -117,6 +117,8 @@ def main():
         print("\nCreating sample data...")
         data = create_sample_data(spark)
         # Split data 70% training, 30% testing
+        # Note: This is a small demonstration dataset. In production, ensure
+        # sufficient data in both training and test sets for meaningful evaluation.
         train_data, test_data = data.randomSplit([0.7, 0.3], seed=1234)
         
         # Configure and train neural network

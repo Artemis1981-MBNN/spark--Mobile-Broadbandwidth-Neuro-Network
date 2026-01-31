@@ -172,13 +172,19 @@ For optimal neural network performance:
 
 ```properties
 # Use standard Spark properties for actual memory configuration:
+# These properties are recognized by Spark and control actual resource allocation
 spark.executor.memory=4g
 spark.driver.memory=2g
 
 # Use standard Spark property for serialization:
+# This property affects Spark's serialization behavior
 spark.serializer=org.apache.spark.serializer.KryoSerializer
 
 # Custom application properties (for reference in application code):
+# These are NOT recognized by Spark's core engine. They serve as a configuration
+# framework for applications to read and use in custom integration logic.
+# Applications can read these via spark.conf.get() and use them to configure
+# custom behavior, but they don't affect Spark's native functionality.
 spark.neuralnet.executor.memory=4g
 spark.neuralnet.driver.memory=2g
 spark.neuralnet.serializer=org.apache.spark.serializer.KryoSerializer
