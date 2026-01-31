@@ -60,9 +60,13 @@ spark.broadband.neuro.optimizer=adam
 
 # SHA tracking for version control
 spark.neuralnet.config.version=1.0.0
-spark.neuralnet.config.sha=initial
-spark.neuralnet.repository.sha=HEAD
+spark.neuralnet.config.sha=a8dd520d2ec8e971ae27e327d819f40bdf84e8a3
+spark.neuralnet.repository.sha=a8dd520d2ec8e971ae27e327d819f40bdf84e8a3
 ```
+
+**SHA Tracking**: The templates now include actual commit SHAs from PR #3 (commit `a8dd520d2ec`) which added the neural network integration. When copying this template:
+- Keep the default SHA to track which version of the configuration you're using
+- Or update to a different commit SHA if deploying a specific version
 
 Copy this template to create your configuration:
 ```bash
@@ -82,9 +86,9 @@ artemis.repository.url=https://github.com/Jury1981/Artemis1981
 artemis.integration.mode=active
 
 # SHA tracking and version control
-artemis.sync.commit.sha=HEAD
+artemis.sync.commit.sha=a8dd520d2ec8e971ae27e327d819f40bdf84e8a3
 artemis.integration.version=1.0.0
-artemis.integration.version.sha=initial
+artemis.integration.version.sha=a8dd520d2ec8e971ae27e327d819f40bdf84e8a3
 artemis.sync.auto.update.sha=true
 
 # Data synchronization
@@ -101,6 +105,11 @@ artemis.ssh.key.path=~/.ssh/id_rsa
 artemis.ssh.known.hosts=~/.ssh/known_hosts
 artemis.ssh.timeout=30
 ```
+
+**SHA Tracking**: The templates include actual commit SHAs from PR #3 (commit `a8dd520d2ec`) that added the Artemis integration configuration. When copying this template:
+- The default SHAs track the version that introduced this configuration
+- `artemis.sync.commit.sha` will be updated automatically during sync if `artemis.sync.auto.update.sha=true`
+- `artemis.integration.version.sha` should be manually updated when upgrading the integration version
 
 Copy this template to create your configuration:
 ```bash

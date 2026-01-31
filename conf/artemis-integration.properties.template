@@ -28,13 +28,15 @@ artemis.integration.mode=active
 # ============================================================================
 
 # Track latest synchronized commit SHA
-# HEAD is a placeholder - will be replaced with actual commit SHA during sync operations
-artemis.sync.commit.sha=HEAD
+# Default to the commit that added Artemis integration configuration (PR #3)
+# Will be replaced with actual commit SHA during sync operations
+artemis.sync.commit.sha=a8dd520d2ec8e971ae27e327d819f40bdf84e8a3
 
 # Version tracking for integration compatibility
 artemis.integration.version=1.0.0
-# Initial placeholder - will be updated with actual commit SHA during deployment
-artemis.integration.version.sha=initial
+# Configuration template created in commit a8dd520d2ec8e971ae27e327d819f40bdf84e8a3
+# Update with specific commit SHA when deploying to pin to a version
+artemis.integration.version.sha=a8dd520d2ec8e971ae27e327d819f40bdf84e8a3
 
 # Auto-update SHA on sync
 # When true, automatically updates artemis.sync.commit.sha with the latest commit SHA during sync operations
