@@ -42,6 +42,9 @@ from pyspark.ml.linalg import Vectors
 
 def create_spark_session():
     """Create and configure Spark session with Neural Network and integration settings."""
+    # Note: These custom configuration properties demonstrate a configuration framework.
+    # In a real integration, applications would read these properties and use them to
+    # implement custom integration logic with Artemis1981.
     spark = SparkSession.builder \
         .appName("NeuralNetworkArtemisIntegration") \
         .config("spark.mllib.neuralnetwork.enabled", "true") \
