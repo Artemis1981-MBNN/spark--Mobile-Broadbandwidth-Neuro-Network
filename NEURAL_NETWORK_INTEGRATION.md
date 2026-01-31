@@ -17,14 +17,14 @@ This repository provides configuration templates and examples for using Apache S
 
    Copy the neural network configuration:
    ```bash
-   cp conf/neural-network.conf conf/spark-defaults.conf
+   cp config/neural-network.conf.template conf/spark-defaults.conf
    ```
 
 2. **Configure Artemis1981 Integration**
 
-   The Artemis integration properties are available in:
-   ```
-   conf/artemis-integration.properties
+   Copy the Artemis integration properties template:
+   ```bash
+   cp config/artemis-integration.properties.template conf/artemis-integration.properties
    ```
 
 ### Running Examples
@@ -62,8 +62,8 @@ Artemis1981 Integration
 
 | File | Purpose |
 |------|---------|
-| `conf/neural-network.conf` | Neural network and mobile broadband settings |
-| `conf/artemis-integration.properties` | Artemis1981 repository integration |
+| `config/neural-network.conf.template` | Template for neural network and mobile broadband settings |
+| `config/artemis-integration.properties.template` | Template for Artemis1981 repository integration |
 | `examples/src/main/python/mllib/neural_network_artemis_integration.py` | Example implementation |
 
 ## Documentation

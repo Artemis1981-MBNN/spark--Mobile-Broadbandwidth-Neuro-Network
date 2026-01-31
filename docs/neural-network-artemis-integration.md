@@ -165,11 +165,16 @@ This integration specifically supports:
 For optimal neural network performance:
 
 ```properties
-# Increase memory for neural network operations
+# Use standard Spark properties for actual memory configuration:
+spark.executor.memory=4g
+spark.driver.memory=2g
+
+# Use standard Spark property for serialization:
+spark.serializer=org.apache.spark.serializer.KryoSerializer
+
+# Custom application properties (for reference in application code):
 spark.neuralnet.executor.memory=4g
 spark.neuralnet.driver.memory=2g
-
-# Use Kryo serialization for better performance
 spark.neuralnet.serializer=org.apache.spark.serializer.KryoSerializer
 
 # Adjust batch size based on data size
