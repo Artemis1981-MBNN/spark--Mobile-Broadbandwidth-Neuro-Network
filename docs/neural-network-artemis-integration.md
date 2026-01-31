@@ -157,8 +157,8 @@ This integration specifically supports:
 
 **Note**: The following custom configuration parameters are provided as a framework for organizing neural network and integration settings. Spark natively supports MultilayerPerceptronClassifier without additional configuration. The custom properties below can be used by applications that implement integration with Artemis1981.
 
-| Parameter | Description | Purpose |
-|-----------|-------------|---------|
+| Parameter | Description | Type |
+|-----------|-------------|------|
 | `spark.mllib.neuralnetwork.enabled` | Flag for neural network mode | Application-level toggle |
 | `spark.mllib.neuralnetwork.defaultLayers` | Default number of layers | Application configuration |
 | `spark.mllib.neuralnetwork.learningRate` | Learning rate for training | Application configuration |
