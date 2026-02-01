@@ -42,6 +42,9 @@ from pyspark.ml.linalg import Vectors
 
 def create_spark_session():
     """Create and configure Spark session with Neural Network and integration settings."""
+    # Note: These custom configuration properties demonstrate a configuration framework.
+    # In a real integration, applications would read these properties and use them to
+    # implement custom integration logic with Artemis1981.
     spark = SparkSession.builder \
         .appName("NeuralNetworkArtemisIntegration") \
         .config("spark.mllib.neuralnetwork.enabled", "true") \
@@ -110,10 +113,13 @@ def main():
     spark = create_spark_session()
     
     try:
-        # Create sample data
+        # Create sample data and split into train/test sets
         print("\nCreating sample data...")
-        train_data = create_sample_data(spark)
-        test_data = create_sample_data(spark)
+        data = create_sample_data(spark)
+        # Split data 70% training, 30% testing
+        # Note: This is a small demonstration dataset. In production, ensure
+        # sufficient data in both training and test sets for meaningful evaluation.
+        train_data, test_data = data.randomSplit([0.7, 0.3], seed=1234)
         
         # Configure and train neural network
         print("\nConfiguring neural network...")

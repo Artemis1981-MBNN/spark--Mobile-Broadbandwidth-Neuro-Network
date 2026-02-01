@@ -37,9 +37,12 @@ This integration provides:
 
 ## Configuration Files
 
-### 1. Neural Network Configuration (`conf/neural-network.conf.template`)
+### 1. Neural Network Configuration
 
-This template file contains Spark-specific settings for neural network operations and SHA tracking:
+Template: `config/neural-network.conf.template`
+Runtime: `conf/spark-defaults.conf` (after copying template)
+
+This file contains Spark-specific settings for neural network operations:
 
 ```properties
 # Enable Neural Network support
@@ -57,54 +60,29 @@ spark.mllib.neuralnetwork.maxIterations=100
 spark.broadband.neuro.enabled=true
 spark.broadband.neuro.batchSize=32
 spark.broadband.neuro.optimizer=adam
-
-# SHA tracking for version control
-spark.neuralnet.config.version=1.0.0
-spark.neuralnet.config.sha=initial
-spark.neuralnet.repository.sha=HEAD
 ```
 
-Copy this template to create your configuration:
-```bash
-cp conf/neural-network.conf.template conf/neural-network.conf
-```
+### 2. Artemis Integration Properties
 
-### 2. Artemis Integration Properties (`conf/artemis-integration.properties.template`)
+Template: `config/artemis-integration.properties.template`
+Runtime: `conf/artemis-integration.properties` (after copying template)
 
-This template file provides a configuration framework for organizing Artemis1981 repository connection settings with SSH and HTTPS URLs, plus SHA tracking:
+This file provides a configuration framework for organizing Artemis1981 repository connection settings:
 
 **Note**: These properties serve as a configuration template. Actual integration functionality would require additional implementation.
 
 ```properties
-# Repository connection (SSH and HTTPS)
-artemis.repository.ssh=git@github.com:Jury1981/Artemis1981.git
+# Repository connection
 artemis.repository.url=https://github.com/Jury1981/Artemis1981
 artemis.integration.mode=active
-
-# SHA tracking and version control
-artemis.sync.commit.sha=HEAD
-artemis.integration.version=1.0.0
-artemis.integration.version.sha=initial
-artemis.sync.auto.update.sha=true
 
 # Data synchronization
 artemis.data.sync.enabled=true
 artemis.data.sync.frequency=300
-artemis.data.sync.protocol=ssh
 
 # Neural network coordination
-artemis.neuralnet.coordination=true
+artemis.neuralnet.coordination=enabled
 artemis.neuralnet.dataflow=bidirectional
-
-# SSH authentication
-artemis.ssh.key.path=~/.ssh/id_rsa
-artemis.ssh.known.hosts=~/.ssh/known_hosts
-artemis.ssh.timeout=30
-```
-
-Copy this template to create your configuration:
-```bash
-cp conf/artemis-integration.properties.template conf/artemis-integration.properties
 ```
 
 ## Usage
@@ -138,21 +116,8 @@ predictions = model.transform(test_data)
 
 ### Running the Integration Example
 
-First, set up the configuration files:
 ```bash
-# Copy configuration templates
-cp conf/neural-network.conf.template conf/neural-network.conf
-cp conf/artemis-integration.properties.template conf/artemis-integration.properties
-
-# Edit configurations as needed:
-# - Update artemis.ssh.key.path to point to your SSH private key
-# - Replace HEAD with actual commit SHAs if you want to pin to specific versions
-# - Customize repository URLs if using a fork
-```
-
-Then run the example:
-```bash
-# Using spark-submit with config files
+# Using spark-submit
 ./bin/spark-submit \
   --conf spark.mllib.neuralnetwork.enabled=true \
   --conf spark.artemis.integration.enabled=true \
@@ -192,8 +157,8 @@ This integration specifically supports:
 
 **Note**: The following custom configuration parameters are provided as a framework for organizing neural network and integration settings. Spark natively supports MultilayerPerceptronClassifier without additional configuration. The custom properties below can be used by applications that implement integration with Artemis1981.
 
-| Parameter | Description | Purpose |
-|-----------|-------------|---------|
+| Parameter | Description | Type |
+|-----------|-------------|------|
 | `spark.mllib.neuralnetwork.enabled` | Flag for neural network mode | Application-level toggle |
 | `spark.mllib.neuralnetwork.defaultLayers` | Default number of layers | Application configuration |
 | `spark.mllib.neuralnetwork.learningRate` | Learning rate for training | Application configuration |
@@ -206,11 +171,22 @@ This integration specifically supports:
 For optimal neural network performance:
 
 ```properties
-# Increase memory for neural network operations
+# Use standard Spark properties for actual memory configuration:
+# These properties are recognized by Spark and control actual resource allocation
+spark.executor.memory=4g
+spark.driver.memory=2g
+
+# Use standard Spark property for serialization:
+# This property affects Spark's serialization behavior
+spark.serializer=org.apache.spark.serializer.KryoSerializer
+
+# Custom application properties (for reference in application code):
+# These are NOT recognized by Spark's core engine. They serve as a configuration
+# framework for applications to read and use in custom integration logic.
+# Applications can read these via spark.conf.get() and use them to configure
+# custom behavior, but they don't affect Spark's native functionality.
 spark.neuralnet.executor.memory=4g
 spark.neuralnet.driver.memory=2g
-
-# Use Kryo serialization for better performance
 spark.neuralnet.serializer=org.apache.spark.serializer.KryoSerializer
 
 # Adjust batch size based on data size
